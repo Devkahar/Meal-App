@@ -1,7 +1,6 @@
-
-
 import 'package:flutter/material.dart';
-
+import 'package:mealsapp/widgets/meal_item.dart';
+import '../widgets/dummy_data.dart';
 class CategoryMealScreen extends StatelessWidget {
 
   const CategoryMealScreen({Key? key}) : super(key: key);
@@ -9,11 +8,16 @@ class CategoryMealScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final routeArg = ModalRoute.of(context)?.settings.arguments as Map<String,String>;
-    final recipeTitle = routeArg['title'];
-    final recipeId = routeArg['id'];
+    final categoryTitle = routeArg['title'];
+    final categoryId = routeArg['id'];
+    final recipyList = DUMMY_MEALS.where((meal){
+      return meal.categories.contains(categoryId);
+    }).toList();
     return Scaffold(
-      appBar: AppBar(title: Text(recipeTitle!),),
-      body: Center(child: const Text('Eat a Meal')),
+      appBar: AppBar(title: Text(categoryTitle!),),
+      body: ListView.builder(itemBuilder: (_,index){
+          return MealItem(title: recipyList[index].title, imageUrl: recipyList[index].imageUrl, duration: recipyList[index].duration, complexity: recipyList[index].complexity, affordability: recipyList[index].affordability);
+      },itemCount: recipyList.length,),
     );
   }
 }
