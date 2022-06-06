@@ -11,7 +11,8 @@ class MealItem extends StatelessWidget {
   final int duration;
   final Complexity complexity;
   final Affordability affordability;
-  const MealItem({Key? key, required this.title, required this.imageUrl, required this.duration, required this.complexity, required this.affordability, required this.id}) : super(key: key);
+  final Function deleteRecipe;
+  const MealItem({Key? key, required this.title, required this.imageUrl, required this.duration, required this.complexity, required this.affordability, required this.id, required this.deleteRecipe}) : super(key: key);
   String get complexityText{
      List<String> compx = ["Simple","Challenging","Hard"];
      return compx[complexity.index];
@@ -21,8 +22,12 @@ class MealItem extends StatelessWidget {
     return aff[affordability.index];
   }
   // print(complexity);
-  void selectMeal(BuildContext ctx){
-    Navigator.of(ctx).pushNamed('/meal-detail', arguments: id);
+  void selectMeal (BuildContext ctx)async{
+    final res = await Navigator.of(ctx).pushNamed('/meal-detail', arguments: id);
+    if(res!=null){
+      deleteRecipe(id);
+
+    }
   }
   @override
   Widget build(BuildContext context) {
