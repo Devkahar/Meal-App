@@ -21,6 +21,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   List<Meal> _availableMeal = DUMMY_MEALS;
+  // Marking Fav by storing Id's
+  List<String> fav = [];
   @override
   Map<String,bool> _filters = {
     'gluten': false,
@@ -49,6 +51,21 @@ class _MyAppState extends State<MyApp> {
       }).toList();
     });
   }
+  void toggleFav(String id){
+    final contain = fav.contains(id);
+    setState((){
+      if(!contain) fav.add(id);
+      else {
+        fav.remove(id);
+      }
+    });
+    print("Fav");
+    print(fav);
+  }
+  bool isFav(String id){
+    print({fav, id});
+    return fav.contains(id);
+  }
   Widget build(BuildContext context) {
     print(_availableMeal);
     return MaterialApp(
@@ -71,9 +88,9 @@ class _MyAppState extends State<MyApp> {
                 ),
               )),
       routes: {
-        '/': (ctx) => const TabsScreen(),
+        '/': (ctx) => TabsScreen(favouriteList : fav),
         '/category-meals': (ctx) => CategoryMealScreen(availableMeal: _availableMeal),
-        '/meal-detail': (ctx)=> const MealDetail(),
+        '/meal-detail': (ctx)=> MealDetail(favList: fav, isFav: isFav,toggleFav: toggleFav),
         '/filter': (ctx)=>  FilterScreen(saveFilter: saveFilter,),
       },
     );

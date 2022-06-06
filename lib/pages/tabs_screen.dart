@@ -4,7 +4,8 @@ import '../pages/categories_screen.dart';
 import '../pages/favourite_screen.dart';
 
 class TabsScreen extends StatefulWidget {
-  const TabsScreen({Key? key}) : super(key: key);
+  final favouriteList;
+  const TabsScreen({Key? key, this.favouriteList,}) : super(key: key);
 
   @override
   State<TabsScreen> createState() => _TabsScreenState();
@@ -13,6 +14,7 @@ class TabsScreen extends StatefulWidget {
 class _TabsScreenState extends State<TabsScreen> {
   var _pageIndex = 0;
   final titles = ['Categories', 'Your Favorites'];
+
   void _selectPage(index) {
     setState(() {
       _pageIndex = index;
@@ -32,9 +34,9 @@ class _TabsScreenState extends State<TabsScreen> {
       drawer: MainDrawer(),
       body: IndexedStack(
         index: _pageIndex,
-        children: const [
-          CategorieScreen(),
-          FavouriteScreen(),
+        children: [
+          const CategorieScreen(),
+          FavouriteScreen(favouriteList: widget.favouriteList),
         ],
       ),
       //body: _pages[_pageIndex]['page'] as Widget,

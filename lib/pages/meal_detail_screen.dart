@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import '../widgets/dummy_data.dart';
 
 class MealDetail extends StatelessWidget {
-  const MealDetail({Key? key}) : super(key: key);
-
+  final List<String> favList;
+  final Function isFav;
+  final Function toggleFav;
+  const MealDetail({Key? key, required this.favList, required this.isFav, required this.toggleFav}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final mealId = ModalRoute.of(context)?.settings.arguments as String;
     final selectMeal =
         DUMMY_MEALS.firstWhere((element) => element.id == mealId);
 
-    Widget buildContainer (title){
+    Widget buildContainer(title) {
       return Container(
         margin: EdgeInsets.symmetric(vertical: 10),
         child: Text(
@@ -20,21 +22,31 @@ class MealDetail extends StatelessWidget {
       );
     }
 
-    Widget buildLists (child){
+    Widget buildLists(child) {
       return Container(
-          height: 150,
-          width: 300,
-          padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-      color: Colors.white,
-      border: Border.all(color: Colors.grey),
-      borderRadius: BorderRadius.circular(15)),
-      child: child,
+        height: 150,
+        width: 300,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(15)),
+        child: child,
       );
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(selectMeal.title),
+        actions: [
+         IconButton(
+              color: (isFav(mealId) as bool)?Colors.yellow:Colors.white,
+              icon: Icon(Icons.favorite), onPressed: () {
+                toggleFav(mealId);
+
+         },
+            ),
+        ],
       ),
       body: Column(
         children: [
@@ -46,7 +58,7 @@ class MealDetail extends StatelessWidget {
                 fit: BoxFit.cover,
               )),
           buildContainer('Ingredient'),
-        buildLists(
+          buildLists(
             ListView.builder(
               itemBuilder: (ctx, index) {
                 return Card(
@@ -62,8 +74,8 @@ class MealDetail extends StatelessWidget {
             ),
           ),
           buildContainer('Steps'),
-          buildLists(
-            ListView.builder(itemBuilder: (ctx,index){
+          buildLists(ListView.builder(
+            itemBuilder: (ctx, index) {
               return Column(
                 children: [
                   ListTile(
@@ -71,18 +83,18 @@ class MealDetail extends StatelessWidget {
                       child: Text('# ${(index + 1)}'),
                     ),
                     title: Text(selectMeal.steps[index]),
-
                   ),
                   Divider(),
                 ],
               );
-            },itemCount: selectMeal.steps.length,)
-          )
+            },
+            itemCount: selectMeal.steps.length,
+          ))
         ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.delete),
-        onPressed: (){
+        onPressed: () {
           Navigator.of(context).pop(mealId);
         },
       ),
