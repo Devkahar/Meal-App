@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mealsapp/widgets/main_drawer.dart';
 
 class FilterScreen extends StatefulWidget {
-  const FilterScreen({Key? key}) : super(key: key);
+  final Function saveFilter;
+  const FilterScreen({Key? key, required this.saveFilter}) : super(key: key);
 
   @override
   State<FilterScreen> createState() => _FilterScreenState();
@@ -22,13 +24,29 @@ class _FilterScreenState extends State<FilterScreen> {
       onChanged: (newValue) => onChange(newValue),
     );
   }
-
+  @override
+  void initialState(){
+    this.initialState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text('Filter Page'),
+          actions: [
+            IconButton(onPressed: () {
+              final data = {
+                'gluten': _gluttenFree,
+                'lacose': _lactoseFree,
+                'vegan': _vegan,
+                'vegetarina': _vegetarian,
+              };
+                  widget.saveFilter(data);
+            }, icon: Icon(Icons.save)),
+          ],
         ),
+        drawer: MainDrawer(),
+
         body: Column(children: [
           Container(
             child: Text(
@@ -65,6 +83,7 @@ class _FilterScreenState extends State<FilterScreen> {
               });
             })
           ])),
-        ]));
+        ])
+    );
   }
 }
