@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mealsapp/pages/meal_detail_screen.dart';
+import '/pages/filter_screen.dart';
+import '/pages/meal_detail_screen.dart';
 import './pages/categories_meal_screen.dart';
 import './pages/categories_screen.dart';
 import 'pages/tabs_screen.dart';
@@ -12,6 +13,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
+
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Meals App',
@@ -36,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/': (ctx) => const TabsScreen(),
         '/category-meals': (ctx) => const CategoryMealScreen(),
         '/meal-detail': (ctx)=> const MealDetail(),
+        '/filter': (ctx)=> const FilterScreen(),
       },
     );
   }

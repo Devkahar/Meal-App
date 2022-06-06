@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mealsapp/widgets/main_drawer.dart';
 import '../pages/categories_screen.dart';
 import '../pages/favourite_screen.dart';
 
@@ -11,14 +12,11 @@ class TabsScreen extends StatefulWidget {
 
 class _TabsScreenState extends State<TabsScreen> {
   var _pageIndex = 0;
-
   final titles = ['Categories', 'Your Favorites'];
-
   void _selectPage(index) {
     setState(() {
       _pageIndex = index;
     });
-
     print('_pageIndex: $_pageIndex');
   }
 
@@ -31,6 +29,7 @@ class _TabsScreenState extends State<TabsScreen> {
         ),
         //title: Text(_pages[_pageIndex]['title'] as String),
       ),
+      drawer: MainDrawer(),
       body: IndexedStack(
         index: _pageIndex,
         children: const [
